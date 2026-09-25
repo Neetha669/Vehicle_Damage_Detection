@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AutoGuard AI | Vehicle Damage Detection</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= LOGIN PAGE ================= -->
+
+    <div id="loginPage" class="login-page">
+
+        <div class="login-card">
+
+            <div class="brand-logo">
+                <div class="logo-icon">AI</div>
+
+                <div>
+                    <h1>AutoGuard AI</h1>
+                    <span>Vehicle Inspection System</span>
+                </div>
+            </div>
+
+            <p class="login-subtitle">
+                AI-Powered Vehicle Damage Detection
+            </p>
+
+            <form id="loginForm">
+
+                <label for="username">Username</label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    required
+                >
+
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                >
+
+                <button type="submit" class="login-btn">
+                    Sign In
+                </button>
+
+            </form>
+
+            <p id="loginError" class="login-error"></p>
+
+            <div class="demo-login">
+                <span>Demo Login</span>
+                <strong>admin / admin123</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN APPLICATION ================= -->
+
+    <div id="app" class="app hidden">
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="logo-icon small">
+                    AI
+                </div>
+
+                <div>
+                    <h2>AutoGuard</h2>
+                    <span>AI Inspection</span>
+                </div>
+
+            </div>
+
+
+            <div class="menu-title">
+                MAIN MENU
+            </div>
+
+
+            <button
+                class="menu-item active"
+                onclick="showPage('dashboard', this)"
+            >
+                <span>▦</span>
+                Dashboard
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showPage('inspection', this)"
+            >
+                <span>🚗</span>
+                Vehicle Inspection
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showPage('detection', this)"
+            >
+                <span>◉</span>
+                AI Detection
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showPage('reports', this)"
+            >
+                <span>▤</span>
+                Reports
+            </button>
+
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <button
+                class="menu-item"
+                onclick="showPage('admin', this)"
+            >
+                <span>⚙</span>
+                Admin Panel
+            </button>
+
+
+            <!-- SIDEBAR USER -->
+
+            <div class="sidebar-bottom">
+
+                <div class="user-card">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <strong>Admin</strong>
+                        <small>Administrator</small>
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="logout-btn"
+                    onclick="logout()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+
+            <!-- ================= TOP BAR ================= -->
+
+            <header class="topbar">
+
+                <div class="topbar-title">
+
+                    <span class="breadcrumb">
+                        AutoGuard AI /
+                        <span id="pageTitle">
+                            Dashboard
+                        </span>
+                    </span>
+
+                    <p id="pageSubtitle">
+                        Overview of your vehicle inspection system
+                    </p>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <span class="system-online">
+                        <span class="online-dot"></span>
+                        System Online
+                    </span>
+
+
+                    <!-- PROFILE -->
+
+                    <div class="profile-wrapper">
+
+                        <button
+                            class="profile"
+                            onclick="toggleProfileMenu()"
+                        >
+
+                            <div class="avatar">
+                                A
+                            </div>
+
+                            <span>Admin</span>
+
+                            <span class="profile-arrow">
+                               ⌄
+                            </span>
+
+                        </button>
+
+
+                        <div
+                            id="profileMenu"
+                            class="profile-menu"
+                        >
+
+                            <div class="profile-menu-header">
+
+                                <div class="avatar large">
+                                    A
+                                </div>
+
+                                <div>
+                                    <strong>Admin</strong>
+                                    <small>Administrator</small>
+                                </div>
+
+                            </div>
+
+
+                            <button onclick="showProfile()">
+                                👤 Profile
+                            </button>
+
+
+                            <button onclick="showSettings()">
+                                ⚙️ Settings
+                            </button>
+
+
+                            <button onclick="logout()">
+                                ↪ Logout
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= DASHBOARD ================= -->
+
+            <section
+                id="dashboard"
+                class="page active-page"
+            >
+
+                <div class="welcome-banner">
+
+                    <div>
+
+                        <span class="small-label">
+                            WELCOME BACK
+                        </span>
+
+                        <h1>
+                            Vehicle Inspection Dashboard
+                        </h1>
+
+                        <p>
+                            Monitor AI-powered vehicle damage
+                            detection from one place.
+                        </p>
+
+                    </div>
+
+
+                    <div class="banner-icon">
+                        🚘
+                    </div>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+
+                <div class="stat-grid">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+                            🚗
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Total Inspections
+                            </span>
+
+                            <h2 id="totalInspections">
+                                0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon red">
+                            ⚠
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Defects Detected
+                            </span>
+
+                            <h2 id="defectsDetected">
+                                0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Normal Vehicles
+                            </span>
+
+                            <h2 id="normalInspections">
+                                0
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon purple">
+                            ◉
+                        </div>
+
+                        <div>
+
+                            <span>
+                                AI Model
+                            </span>
+
+                            <h2>
+                                YOLOv8s
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DASHBOARD LOWER -->
+
+                <div class="dashboard-grid">
+
+
+                    <div class="content-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Recent Detection
+                                </h3>
+
+                                <p>
+                                    Latest vehicle inspection result
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="recentDetection"
+                            class="empty-state"
+                        >
+
+                            <div class="empty-icon">
+                                🚗
+                            </div>
+
+                            <h3>
+                                No inspections yet
+                            </h3>
+
+                            <p>
+                                Upload a vehicle image to start
+                                an AI inspection.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="content-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    System Status
+                                </h3>
+
+                                <p>
+                                    Current AI system status
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="status-list">
+
+
+                            <div class="status-row">
+
+                                <span>
+                                    Frontend
+                                </span>
+
+                                <strong class="success">
+                                    ● Active
+                                </strong>
+
+                            </div>
+
+
+                            <div class="status-row">
+
+                                <span>
+                                    FastAPI
+                                </span>
+
+                                <strong class="success">
+                                    ● Connected
+                                </strong>
+
+                            </div>
+
+
+                            <div class="status-row">
+
+                                <span>
+                                    YOLOv8s
+                                </span>
+
+                                <strong class="warning">
+                                    ● Pending
+                                </strong>
+
+                            </div>
+
+
+                            <div class="status-row">
+
+                                <span>
+                                    CARDD Dataset
+                                </span>
+
+                                <strong class="warning">
+                                    ● Pending
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= VEHICLE INSPECTION ================= -->
+
+            <section
+                id="inspection"
+                class="page"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h1>
+                            Vehicle Inspection
+                        </h1>
+
+                        <p>
+                            Upload a vehicle image or video
+                            for AI-powered damage analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="inspection-layout">
+
+
+                    <!-- UPLOAD -->
+
+                    <div class="content-card upload-card">
+
+                        <div class="upload-icon">
+                            🚗
+                        </div>
+
+                        <h2>
+                            Upload Vehicle
+                        </h2>
+
+                        <p>
+                            Select a vehicle image or video
+                            to begin inspection.
+                        </p>
+
+
+                        <label class="file-upload">
+
+                            <input
+                                type="file"
+                                id="vehicleFile"
+                                accept="image/*,video/*"
+                            >
+
+                            <span>
+                                📁 Choose Image / Video
+                            </span>
+
+                        </label>
+
+
+                        <div
+                            id="preview"
+                            class="preview-area"
+                        ></div>
+
+
+                        <button
+                            class="primary-btn"
+                            onclick="analyzeVehicle()"
+                        >
+                            🔍 Analyze Vehicle
+                        </button>
+
+                    </div>
+
+
+                    <!-- RESULT -->
+
+                    <div class="content-card result-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Detection Result
+                                </h3>
+
+                                <p>
+                                    AI analysis output
+                                </p>
+
+                            </div>
+
+
+                            <span
+                                id="resultBadge"
+                                class="result-badge pending"
+                            >
+                                Waiting
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            id="inspectionResult"
+                            class="result-area"
+                        >
+
+                            <div class="result-placeholder">
+
+                                <div class="large-icon">
+                                    🤖
+                                </div>
+
+                                <h3>
+                                    Ready for inspection
+                                </h3>
+
+                                <p>
+                                    Upload a vehicle image and
+                                    click Analyze Vehicle.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= AI DETECTION ================= -->
+
+            <section
+                id="detection"
+                class="page"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h1>
+                            AI Detection
+                        </h1>
+
+                        <p>
+                            Vehicle damage categories
+                            detected by the AI model.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="damage-grid">
+
+
+                    <div class="damage-card">
+
+                        <div class="damage-icon">
+                            🔍
+                        </div>
+
+                        <h3>
+                            Scratch
+                        </h3>
+
+                        <p>
+                            Surface scratches and marks
+                        </p>
+
+                        <span>
+                            AI Detection
+                        </span>
+
+                    </div>
+
+
+                    <div class="damage-card">
+
+                        <div class="damage-icon">
+                            ⚠
+                        </div>
+
+                        <h3>
+                            Dent
+                        </h3>
+
+                        <p>
+                            Vehicle body dents
+                        </p>
+
+                        <span>
+                            AI Detection
+                        </span>
+
+                    </div>
+
+
+                    <div class="damage-card">
+
+                        <div class="damage-icon">
+                            ◇
+                        </div>
+
+                        <h3>
+                            Crack
+                        </h3>
+
+                        <p>
+                            Visible cracks and fractures
+                        </p>
+
+                        <span>
+                            AI Detection
+                        </span>
+
+                    </div>
+
+
+                    <div class="damage-card">
+
+                        <div class="damage-icon">
+                            ▣
+                        </div>
+
+                        <h3>
+                            Surface Defect
+                        </h3>
+
+                        <p>
+                            Other surface abnormalities
+                        </p>
+
+                        <span>
+                            AI Detection
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Detection Information
+                            </h3>
+
+                            <p>
+                                Current model information
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="model-info">
+
+
+                        <div>
+
+                            <span>
+                                Model
+                            </span>
+
+                            <strong>
+                                YOLOv8s
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Dataset
+                            </span>
+
+                            <strong>
+                                CARDD
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Detection Type
+                            </span>
+
+                            <strong>
+                                Vehicle Damage
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Status
+                            </span>
+
+                            <strong class="warning">
+                                Training Pending
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= REPORTS ================= -->
+
+            <section
+                id="reports"
+                class="page"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h1>
+                            Inspection Reports
+                        </h1>
+
+                        <p>
+                            View previous vehicle inspections
+                            and detection results.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Inspection History
+                            </h3>
+
+                            <p>
+                                Recent vehicle inspections
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Date
+                                    </th>
+
+                                    <th>
+                                        Vehicle
+                                    </th>
+
+                                    <th>
+                                        Result
+                                    </th>
+
+                                    <th>
+                                        Confidence
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="reportTable">
+
+                                <tr>
+
+                                    <td
+                                        colspan="5"
+                                        class="table-empty"
+                                    >
+                                        No inspection records
+                                        available.
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADMIN PANEL ================= -->
+
+            <section
+                id="admin"
+                class="page"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h1>
+                            Admin Panel
+                        </h1>
+
+                        <p>
+                            Manage system configuration
+                            and application information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-grid">
+
+
+                    <div class="content-card">
+
+                        <div class="admin-icon">
+                            👤
+                        </div>
+
+                        <h3>
+                            Administrator
+                        </h3>
+
+                        <p>
+                            Logged in as system administrator.
+                        </p>
+
+
+                        <div class="admin-detail">
+
+                            <span>
+                                Username
+                            </span>
+
+                            <strong>
+                                admin
+                            </strong>
+
+                        </div>
+
+
+                        <div class="admin-detail">
+
+                            <span>
+                                Role
+                            </span>
+
+                            <strong>
+                                Administrator
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="content-card">
+
+                        <div class="admin-icon">
+                            🤖
+                        </div>
+
+                        <h3>
+                            AI Model
+                        </h3>
+
+                        <p>
+                            Vehicle damage detection model.
+                        </p>
+
+
+                        <div class="admin-detail">
+
+                            <span>
+                                Model
+                            </span>
+
+                            <strong>
+                                YOLOv8s
+                            </strong>
+
+                        </div>
+
+
+                        <div class="admin-detail">
+
+                            <span>
+                                Dataset
+                            </span>
+
+                            <strong>
+                                CARDD
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="content-card">
+
+                        <div class="admin-icon">
+                            ⚙
+                        </div>
+
+                        <h3>
+                            System
+                        </h3>
+
+                        <p>
+                            Application configuration.
+                        </p>
+
+
+                        <div class="admin-detail">
+
+                            <span>
+                                Backend
+                            </span>
+
+                            <strong>
+                                FastAPI
+                            </strong>
+
+                        </div>
+
+
+                        <div class="admin-detail">
+
+                            <span>
+                                Environment
+                            </span>
+
+                            <strong>
+                                Development
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PROFILE ================= -->
+
+            <section
+                id="profile"
+                class="page"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h1>
+                            My Profile
+                        </h1>
+
+                        <p>
+                            Administrator account information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+                    <div class="profile-avatar-large">
+                        A
+                    </div>
+
+
+                    <div class="profile-information">
+
+                        <h2>
+                            Admin
+                        </h2>
+
+                        <p>
+                            System Administrator
+                        </p>
+
+
+                        <div class="profile-details">
+
+
+                            <div>
+
+                                <span>
+                                    Username
+                                </span>
+
+                                <strong>
+                                    admin
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Role
+                                </span>
+
+                                <strong>
+                                    Administrator
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    System
+                                </span>
+
+                                <strong>
+                                    AutoGuard AI
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Account Status
+                                </span>
+
+                                <strong class="success">
+                                    Active
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SETTINGS ================= -->
+
+            <section
+                id="settings"
+                class="page"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h1>
+                            Settings
+                        </h1>
+
+                        <p>
+                            Manage application preferences.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content-card settings-card">
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                System Notifications
+                            </h3>
+
+                            <p>
+                                Receive vehicle inspection
+                                notifications.
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                AI Detection
+                            </h3>
+
+                            <p>
+                                Enable AI-powered vehicle
+                                damage analysis.
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                System Mode
+                            </h3>
+
+                            <p>
+                                Current application environment.
+                            </p>
+
+                        </div>
+
+
+                        <strong>
+                            Development
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
+
