@@ -1321,80 +1321,40 @@ function drawDetectionBoxes(
 
 // =====================================================
 // UPDATE DASHBOARD
+// SHOW ONLY CROPPED DAMAGED PART
 // =====================================================
 
-function updateDashboard(
-    file,
-    predictions
-) {
-
-    // Safety check
-
-    if (!Array.isArray(predictions)) {
-
-        predictions = [];
-
-    }
-
-
-    // =================================================
-    // TOTAL INSPECTIONS
-    // =================================================
+function updateDashboard(file, predictions) {
 
     const totalElement =
-        document.getElementById(
-            "totalInspections"
-        );
-
-
-    // =================================================
-    // DEFECTS
-    // =================================================
+        document.getElementById("totalInspections");
 
     const defectElement =
-        document.getElementById(
-            "defectsDetected"
-        );
-
-
-    // =================================================
-    // NORMAL
-    // =================================================
+        document.getElementById("defectsDetected");
 
     const normalElement =
-        document.getElementById(
-            "normalInspections"
-        );
+        document.getElementById("normalInspections");
 
+    const recent =
+        document.getElementById("recentDetection");
+
+
+    // =================================================
+    // UPDATE COUNTS
+    // =================================================
 
     let total =
-        parseInt(
-            totalElement?.textContent || "0"
-        );
-
+        parseInt(totalElement?.textContent || "0");
 
     let defects =
-        parseInt(
-            defectElement?.textContent || "0"
-        );
-
+        parseInt(defectElement?.textContent || "0");
 
     let normal =
-        parseInt(
-            normalElement?.textContent || "0"
-        );
+        parseInt(normalElement?.textContent || "0");
 
-
-    // =================================================
-    // INCREMENT TOTAL
-    // =================================================
 
     total++;
 
-
-    // =================================================
-    // DAMAGE OR NORMAL
-    // =================================================
 
     if (predictions.length > 0) {
 
@@ -1407,116 +1367,208 @@ function updateDashboard(
     }
 
 
-    // =================================================
-    // UPDATE ELEMENTS
-    // =================================================
-
     if (totalElement) {
-
-        totalElement.textContent =
-            total;
-
+        totalElement.textContent = total;
     }
-
 
     if (defectElement) {
-
-        defectElement.textContent =
-            defects;
-
+        defectElement.textContent = defects;
     }
-
 
     if (normalElement) {
-
-        normalElement.textContent =
-            normal;
-
+        normalElement.textContent = normal;
     }
 
 
     // =================================================
-    // RECENT DETECTION
-    // =================================================
-
-    const recent =
-        document.getElementById(
-            "recentDetection"
-        );
-
-
-    if (!recent) {
-
-        return;
-
-    }
-
-
-    // =================================================
-    // NORMAL
+    // NO DAMAGE
     // =================================================
 
     if (predictions.length === 0) {
 
-        recent.innerHTML = `
+        if (recent) {
 
-            <div>
+            recent.innerHTML = `
 
-                <strong>
-                    ${escapeHTML(file.name)}
-                </strong>
+                <div style="text-align:center;">
 
-                <p>
-                    ✓ No damage detected
-                </p>
+                    <strong>
+                        ${escapeHTML(file.name)}
+                    </strong>
 
-            </div>
+                    <p>
+                        ✓ No damage detected
+                    </p>
 
-        `;
+                </div>
+
+            `;
+
+        }
 
         return;
-
     }
 
 
     // =================================================
-    // DAMAGE
+    // GET FIRST DETECTED DAMAGE
     // =================================================
 
-    const first =
-        predictions[0];
+    const prediction = predictions[0];
+
+
+    const className =
+        prediction.class || "Damage";
 
 
     const confidence =
-        Number(
-            first.confidence || 0
-        ) * 100;
+        (prediction.confidence * 100).toFixed(2);
 
 
-    recent.innerHTML = `
+    // =================================================
+    // CREATE IMAGE
+    // =================================================
 
-        <div>
+    const image =
+        new Image();
 
-            <strong>
-                ${escapeHTML(file.name)}
-            </strong>
 
-            <p>
-                ⚠
-                ${escapeHTML(
-                    first.class || "Damage"
-                )}
-                —
-                ${confidence.toFixed(2)}%
-            </p>
+    image.src =
+        URL.createObjectURL(file);
 
-        </div>
 
-    `;
+    image.onload = function () {
+
+        // Roboflow bounding box
+        const x =
+            prediction.x;
+
+        const y =
+            prediction.y;
+
+        const width =
+            prediction.width;
+
+        const height =
+            prediction.height;
+
+
+        // Convert center coordinates
+        // to top-left coordinates
+
+        const left =
+            x - (width / 2);
+
+        const top =
+            y - (height / 2);
+
+
+        // =================================================
+        // CREATE CROP CANVAS
+        // =================================================
+
+        const canvas =
+            document.createElement("canvas");
+
+
+        canvas.width =
+            width;
+
+        canvas.height =
+            height;
+
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        // =================================================
+        // CROP ONLY DAMAGED AREA
+        // =================================================
+
+        ctx.drawImage(
+
+            image,
+
+            left,
+            top,
+            width,
+            height,
+
+            0,
+            0,
+            width,
+            height
+
+        );
+
+
+        // Convert cropped image
+        // to displayable image
+
+        const croppedImage =
+            canvas.toDataURL("image/jpeg", 0.95);
+
+
+        // =================================================
+        // DISPLAY CROPPED DAMAGE
+        // =================================================
+
+        if (recent) {
+
+            recent.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    width:100%;
+                ">
+
+                    <img
+                        src="${croppedImage}"
+                        alt="Detected damaged area"
+                        style="
+                            width:220px;
+                            max-height:160px;
+                            object-fit:contain;
+                            border-radius:10px;
+                            border:3px solid #ff4444;
+                            display:block;
+                            margin:0 auto 12px auto;
+                        "
+                    >
+
+                    <strong>
+                        ${escapeHTML(file.name)}
+                    </strong>
+
+                    <p style="margin-top:6px;">
+                        ⚠ ${escapeHTML(className)}
+                        — ${confidence}%
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        // Free memory
+
+        URL.revokeObjectURL(image.src);
+
+    };
+
+
+    image.onerror = function () {
+
+        console.error(
+            "Could not load image for cropping."
+        );
+
+    };
 
 }
-
-
 // =====================================================
 // ADD REPORT
 // =====================================================

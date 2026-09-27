@@ -997,3 +997,128 @@ th {
 
     pointer-events: none;
 }
+/* =====================================================
+   DAMAGED PART / DETECTION CROP
+   ===================================================== */
+
+.damage-crop-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.damage-crop-container img {
+    display: block;
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid #ef4444;
+    background: #f8fafc;
+    padding: 4px;
+}
+
+.damage-crop-label {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #dc2626;
+}
+
+.damage-crop-confidence {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+
+/* =====================================================
+   RECENT DETECTION
+   ===================================================== */
+
+#recentDetection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    text-align: center;
+}
+
+#recentDetection strong {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #1e293b;
+}
+
+#recentDetection p {
+    margin-top: 5px;
+    color: #64748b;
+}
+
+
+/* =====================================================
+   DAMAGE DETECTED PREVIEW
+   ===================================================== */
+
+.detection-damage-preview {
+    width: 100%;
+    max-width: 450px;
+    margin: 15px auto;
+    padding: 10px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.detection-damage-preview img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+
+/* =====================================================
+   DAMAGE RESULT
+   ===================================================== */
+
+.result-damage-crop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.result-damage-crop img {
+    width: 100%;
+    max-width: 450px;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid #ef4444;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .damage-crop-container {
+        max-width: 100%;
+    }
+
+    .damage-crop-container img {
+        max-height: 220px;
+    }
+
+    .detection-damage-preview {
+        max-width: 100%;
+    }
+
+}
